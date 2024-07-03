@@ -1,12 +1,14 @@
 #!/bin/sh
 # 加载 .env 文件
 # .env文件应和该脚本文件处于同一目录内，并且文件中应包含变量"bark_key"，例如“bark_key=xxxxxxxxxx”
-if [ -f .env ]; then
-    source .env
+# 若不需要使用bark报警，则手动注释掉改内容
+if [ -f ./.env ]; then
+    source ./.env
 else
     echo ".env file not found! Manually copy the ".env-template" file to ".env" and add variables as required"
     exit 1
 fi
+# 若不需要使用bark报警，则手动注释掉改以上内容
 
 # 定义站点列表
 sites=("aliyun.com" "elisky.cn" "github.com")
@@ -32,6 +34,7 @@ get_ssl_expiry_date() {
     else
         echo "$site: Certificate expires on $formatted_date"
     fi
+    # 若不需要使用bark报警，则手动注释掉改以上if判断内容
 }
 
 # 循环遍历所有站点
