@@ -27,3 +27,12 @@
 #     fi
 # }
 ```
+
+# Q&A
+## 已添加.env文件，但仍提示找不到变量文件
+如下提示：
+`.env file not found! Manually copy the .env-template file to .env and add variables as required`
+
+该问题是由于shell脚本在调用时默认是从当前目录下获取变量信息以及文件的相对路径。由于脚本中对于env文件的判断是`if -f ./.env`和`source ./.env`进行获取变量，所以在 运行的目标 脚本同级目录中添加.env文件之后，若运行路径不是在脚本所在路径下时，则会出现该提示
+解决该问题的方法是：
+cd切换工作目录到 所用目标脚本的目录中去使用脚本，或者是在工作目录下去创建所需的.env文件，这两个方法同样适用
