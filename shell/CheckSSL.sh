@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 # 加载 .env 文件
 # .env文件应和该脚本文件处于同一目录内，并且文件中应包含变量"bark_key"，例如“bark_key=xxxxxxxxxx”
 if [ -f .env ]; then
     source .env
 else
-    echo ".env file not found!"
+    echo ".env file not found! Manually copy the ".env-template" file to ".env" and add variables as required"
     exit 1
 fi
 
