@@ -8,6 +8,7 @@
 ## 变量依赖
 .env文件应和该脚本文件处于同一目录内，并且文件中应包含变量"bark_key"，例如“bark_key=xxxxxxxxxx”，获取方式参考：[brak使用参考](https://bark.day.app/#/tutorial)
 若不需要进行通知告警，则可以手动将脚本中的条件判断语句进行注释
+也可以添加其他告警，例如钉钉、企微或其他webhook等告警通道
 例如:
 ```bash
 # if [ -f ./.env ]; then
