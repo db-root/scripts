@@ -15,7 +15,9 @@ fi
 # 若不需要使用bark报警，则手动注释掉改以上内容
 
 # 定义站点列表
-sites=("aliyun.com" "elisky.cn" "github.com")
+# 若不在".env"文件中定义，则取消下列注释并列举需要检测的站点
+
+# sites=("aliyun.com" "elisky.cn" "github.com")
 
 # 函数来提取和格式化 SSL 证书的到期日期
 get_ssl_expiry_date() {
