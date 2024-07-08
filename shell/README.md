@@ -9,6 +9,7 @@
 .env文件应和该脚本文件处于同一目录内，并且文件中应包含变量"bark_key"，例如“bark_key=xxxxxxxxxx”，获取方式参考：[brak使用参考](https://bark.day.app/#/tutorial)
 若不需要进行通知告警，则可以手动将脚本中的条件判断语句进行注释
 也可以添加其他告警，例如钉钉、企微或其他webhook等告警通道
+
 例如:
 ```bash
 # if [ -f ./.env ]; then
@@ -28,6 +29,26 @@
 #     fi
 # }
 ```
+
+# OpenSSL.sh 快速生成自签名证书脚本
+
+## 脚本依赖
+依赖于openssl，目前常见的Linux系统默认均包含该程序
+
+## 变量依赖
+无
+
+## 使用说明
+
+ --ssl-domain: 生成ssl证书需要的主域名，如果是ip访问服务，则可忽略；
+ --ssl-trusted-ip: 一般ssl证书只信任域名的访问请求，有时候需要使用ip去访问server，那么需要给ssl证书添加扩展IP，多个IP用逗号隔开；
+ --ssl-trusted-domain: 如果想多个域名访问，则添加扩展域名（SSL_TRUSTED_DOMAIN）,多个扩展域名用逗号隔开；
+ --ssl-size: ssl加密位数，默认2048；
+ --ssl-cn: 国家代码(2个字母的代号),默认CN;
+ --ca-cert-recreate: 是否重新创建 ca-cert，ca 证书默认有效期 10 年，创建的 ssl 证书有效期如果是一年需要续签，那么可以直接复用原来的 ca 证书，默认 false;
+ 使用示例:
+ ./create_self-signed-cert.sh --ssl-domain=www.test.com --ssl-trusted-domain=www.test2.com \ 
+ --ssl-trusted-ip=1.1.1.1,2.2.2.2,3.3.3.3 --ssl-size=2048 --ssl-date=3650
 
 # Q&A
 ## 已添加.env文件，但仍提示找不到变量文件
