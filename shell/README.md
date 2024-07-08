@@ -53,6 +53,36 @@
  --ssl-trusted-ip=1.1.1.1,2.2.2.2,3.3.3.3 --ssl-size=2048 --ssl-date=3650
 ```
 
+# SystemInfoMonitor.sh 系统基础资源检测
+该脚本主要用于检测简单的系统资源利用率，如 磁盘、CPU、内存、带宽利用率等
+## 变量依赖
+.env文件应和该脚本文件处于同一目录内，并且文件中应包含变量"bark_key"，例如“bark_key=xxxxxxxxxx”，获取方式参考：[brak使用参考](https://bark.day.app/#/tutorial)
+若不需要进行通知告警，则可以手动将脚本中的条件判断语句进行注释
+也可以添加其他告警，例如钉钉、企微或其他webhook等告警通道
+
+内置变量：
+
+```bash
+# 若有更改需求，则在脚本中进行编辑更改
+# 设置阈值和灵敏度（可以根据需求修改）
+CPU_THRESHOLD=80  # CPU利用率的阈值，超过80%触发curl命令
+MEMORY_THRESHOLD=80  # 内存利用率的阈值，超过80%触发curl命令
+DISK_THRESHOLD=80  # 磁盘使用率的阈值，超过80%触发curl命令
+NETWORK_THRESHOLD=1  # 网络流量的阈值（单位：兆字节），超过1兆字节触发curl命令
+
+# 设置灵敏度阈值和检测时间间隔（可以根据需求修改）
+SENSITIVITY_THRESHOLD=3  # 连续超过阈值的次数，达到3次触发curl命令
+CHECK_INTERVAL=10  # 检测的时间间隔，单位为秒
+```
+
+## 脚本用法
+```bash
+# 后台持续运行，若需要记录脚本运行日志，则使用追加重定向追加到目标日志文件中，但为了防止持续检测出现占用空间过大可以考虑丢弃运行记录
+# 丢弃运行记录如下：
+# nohup /PATH/to/SystemInfoMonitor.sh > /dev/null 2>&1
+nohup /PATH/to/SystemInfoMonitor.sh >> /var/log/SystemInfoMonitor.log
+```
+
 # Q&A
 ## 已添加.env文件，但仍提示找不到变量文件
 如下提示：
