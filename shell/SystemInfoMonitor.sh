@@ -210,6 +210,6 @@ function main() {
 echo `date +"%Y-%m-%d %H:%M:%S"`" Check starting..."
 while true; do
     main
-    echo `date +"%Y-%m-%d %H:%M:%S"`" Pass the check. Waiting for next check..."
+    echo `date +"%Y-%m-%d %H:%M:%S"`" Pass the check. Start the next check in ten seconds"
     sleep $CHECK_INTERVAL
 done

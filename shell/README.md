@@ -1,5 +1,5 @@
 # 脚本说明
-> 声明
+> 声明 
 > 系列脚本仅供学习交流使用，请勿在生产环境使用，若对于脚本有什么优化的建议，欢迎提交issue
 # CheckSSL.sh SSL证书监控脚本
 提供使用shell脚本来简单监控站点的SSL证书到期时间，若小于7天，则触发curl动作配合[bark](https://bark.day.app/#/)（该应用貌似仅Iphone可用）进行告警，也可以优化之后支持钉钉、企业微信等告警通道发送告警提醒
@@ -81,6 +81,23 @@ CHECK_INTERVAL=10  # 检测的时间间隔，单位为秒
 # 丢弃运行记录如下：
 # nohup /PATH/to/SystemInfoMonitor.sh > /dev/null 2>&1
 nohup /PATH/to/SystemInfoMonitor.sh >> /var/log/SystemInfoMonitor.log
+
+# 为确保重启服务器之后仍能够正常运行，则需要考虑将运行命令添加到crond任务或者是添加到开机自启脚本（vim /etc/rc.d/rc.local）
+# 方法一：编辑rc.local文件将启动命令添加到文件中
+vim /etc/rc.d/rc.local
+# 已有的命令不要修改
+#....
+# 在文件末尾添加
+nohup /PATH/to/SystemInfoMonitor.sh >> /var/log/SystemInfoMonitor.log
+# 或
+# nohup /PATH/to/SystemInfoMonitor.sh > /dev/null 2>&1
+
+#方法二：添加定时任务
+crontab -e
+@reboot /usr/bin/nohup /PATH/to/SystemInfoMonitor.sh >> /var/log/SystemInfoMonitor.log
+#或 
+# @reboot /usr/bin/nohup nohup /PATH/to/SystemInfoMonitor.sh > /dev/null 2>&1
+
 ```
 
 # Q&A
