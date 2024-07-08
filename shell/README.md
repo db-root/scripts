@@ -39,6 +39,8 @@
 无
 
 ## 使用说明
+```bash
+./OpenSSL.sh --help
 
  --ssl-domain: 生成ssl证书需要的主域名，如果是ip访问服务，则可忽略；
  --ssl-trusted-ip: 一般ssl证书只信任域名的访问请求，有时候需要使用ip去访问server，那么需要给ssl证书添加扩展IP，多个IP用逗号隔开；
@@ -49,6 +51,7 @@
  使用示例:
  ./create_self-signed-cert.sh --ssl-domain=www.test.com --ssl-trusted-domain=www.test2.com \ 
  --ssl-trusted-ip=1.1.1.1,2.2.2.2,3.3.3.3 --ssl-size=2048 --ssl-date=3650
+```
 
 # Q&A
 ## 已添加.env文件，但仍提示找不到变量文件
