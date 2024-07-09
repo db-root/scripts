@@ -11,7 +11,11 @@ shell包含一些Linux常用脚本
 # 安装git工具 略，请自行使用yum或apt进行安装
 #下载脚本到服务器中
 git clone https://github.com/db-root/scripts.git
+# 或使用wget进行下载
+wget https://download.elisky.cn/scripts/shell/CheckSSL.sh
 cd scripts/shell
+# wget需要单独下载环境变量
+# wget https://download.elisky.cn/scripts/shell/CheckSSL.sh
 cp .env-template .env
 vim .env
 # 按照所需添加变量信息

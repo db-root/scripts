@@ -40,6 +40,8 @@
 
 ## 使用说明
 ```bash
+wget https://download.elisky.cn/scripts/shell/OpenSSL.sh
+
 ./OpenSSL.sh --help
 
  --ssl-domain: 生成ssl证书需要的主域名，如果是ip访问服务，则可忽略；
@@ -77,6 +79,7 @@ CHECK_INTERVAL=10  # 检测的时间间隔，单位为秒
 
 ## 脚本用法
 ```bash
+wget https://download.elisky.cn/scripts/shell/SystemInfoMonitor.sh
 # 后台持续运行，若需要记录脚本运行日志，则使用追加重定向追加到目标日志文件中，但为了防止持续检测出现占用空间过大可以考虑丢弃运行记录
 # 丢弃运行记录如下：
 # nohup /PATH/to/SystemInfoMonitor.sh > /dev/null 2>&1
