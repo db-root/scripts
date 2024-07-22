@@ -130,7 +130,7 @@ EOF
 
 
 main() {
-    install_docker
+    install_docker $@
     if [ -f "docker-${version}.tgz" ]; then
     # 解压文件
     tar -xzf "docker-${version}.tgz"
