@@ -16,7 +16,7 @@ if [ -z "$versions" ]; then
     exit 1
 fi
 install_rely_on() {
-    if [ `type tar` ];do 
+    if [ `type tar` ];then
         echo "tar is installed."
     else
         echo "tar is not installed. Installing..."
