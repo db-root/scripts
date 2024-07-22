@@ -738,4 +738,18 @@ do_install() {
 
 # wrapped up in a function so that we have some protection against only getting
 # half the file during "curl | sh"
+
+docker_daemon_install() {
+	cat > /etc/docker/daemon.json <<EOF
+{
+	"registry-mirrors": [
+		"https://docker.gbxx.fun"
+	]
+}
+EOF
+systemctl daemon-reload
+systemctl restart docker
+systemctl enable docker --now
+}
 do_install
+docker_daemon_install
