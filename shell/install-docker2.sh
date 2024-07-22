@@ -15,6 +15,16 @@ if [ -z "$versions" ]; then
     echo "No Docker version found"
     exit 1
 fi
+install_rely_on() {
+    if [ `type tar` ];do 
+        echo "tar is installed."
+    else
+        echo "tar is not installed. Installing..."
+        yum install -y tar || apt install -y tar || zypp install -y tar || pacman -S tar
+        exit 1
+    fi
+}
+
 install_docker() {
 # 获取最新版本
 latest_version=$(echo "$versions" | tail -n 1)
@@ -130,6 +140,7 @@ EOF
 
 
 main() {
+    install_rely_on
     install_docker $@
     if [ -f "docker-${version}.tgz" ]; then
     # 解压文件
@@ -149,3 +160,5 @@ main() {
         echo "Failed to download Docker ${version}."
     fi
 }
+
+main $@
