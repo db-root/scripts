@@ -1,6 +1,5 @@
 #!/bin/bash
 download_site="download-docker.gbxx.fun"
-
 # 获取所有 Docker 版本
 versions=$(curl -s "https://$download_site/linux/static/stable/$(uname -m)/" | \
     grep -o "docker-.*" | \
@@ -9,7 +8,6 @@ versions=$(curl -s "https://$download_site/linux/static/stable/$(uname -m)/" | \
     sed -E 's/^docker-([0-9]+\.[0-9]+\.[0-9]+)\.tgz$/\1/' | \
     sort -V | \
     tail -n 39)
-
 # 检查是否有版本
 if [ -z "$versions" ]; then
     echo "No Docker version found"
@@ -21,7 +19,6 @@ install_rely_on() {
     else
         echo "tar is not installed. Installing..."
         yum install -y tar || apt install -y tar || zypp install -y tar || pacman -S tar
-        exit 1
     fi
 }
 
@@ -30,20 +27,24 @@ install_docker() {
 latest_version=$(echo "$versions" | tail -n 1)
 
     # 处理参数
-    if [ "$1" == "-s" ]; then
+    if [ "\$1" == "-s" ]; then
         version=$latest_version
     else
         # 显示版本列表并提示选择
         echo "Available Docker versions:"
-        PS3="Select the version to install from 1-40 (enter 40 latest version)："
-        
+        PS3="Select the version to install from 1-40 (press Enter for the latest version): "
         # 将所有版本和最新版本添加到选项中
-        select version in $versions "latest"; do
-            if [ -z "$version" ] || [ "$version" == "latest" ]; then
-                version=$latest_version
+        options=($(echo $versions) "latest")
+        select version in "${options[@]}"; do
+            if [[ "$REPLY" -ge "1" && "$REPLY" -le "${#options[@]}" ]]; then
+                if [ "$version" == "latest" ]; then
+                    version=$latest_version
+                else
+                    version=$version
+                fi
                 break
             else
-                echo "Invalid selection, please reselect"
+                    echo "Invalid option $REPLY. Please try again."
             fi
         done
     fi
@@ -78,12 +79,10 @@ Type=notify
 # exists and systemd currently does not support the cgroup feature set required
 # for containers run by docker
 ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-ExecReload=/bin/kill -s HUP $MAINPID
+ExecReload=/bin/kill -s HUP \$MAINPID
 TimeoutStartSec=0
 RestartSec=2
 Restart=always
-# Environment="HTTP_PROXY=http://192.168.191.1:7890/"
-# Environment="HTTPS_PROXY=http://192.168.191.1:7890/"
 
 # Note that StartLimit* options were moved from "Service" to "Unit" in systemd 229.
 # Both the old, and new location are accepted by systemd 229 and up, so using the old location
@@ -99,10 +98,6 @@ StartLimitInterval=60s
 # in the kernel. We recommend using cgroups to do container-local accounting.
 LimitNPROC=infinity
 LimitCORE=infinity
-# Older systemd versions default to a LimitNOFILE of 1024:1024, which is insufficient for many
-# applications including dockerd itself and will be inherited. Raise the hard limit, while
-# preserving the soft limit for select(2).
-LimitNOFILE=1024:524288
 
 # Comment TasksMax if your systemd version does not support it.
 # Only systemd 226 and above support this option.
@@ -119,7 +114,7 @@ OOMScoreAdjust=-500
 WantedBy=multi-user.target
 EOF
 
-echo <<EOF > /usr/lib/systemd/system/docker.socket
+cat <<EOF > /usr/lib/systemd/system/docker.socket
 [Unit]
 Description=Docker Socket for the API
 
@@ -134,21 +129,49 @@ SocketGroup=docker
 [Install]
 WantedBy=sockets.target
 EOF
+
+cat <<EOF > /usr/lib/systemd/system/containerd.service
+[Unit]
+Description=containerd container runtime
+Documentation=https://containerd.io
+After=network.target local-fs.target
+[Service]
+ExecStartPre=-/sbin/modprobe overlay
+ExecStart=/usr/bin/containerd
+Type=notify
+Delegate=yes
+KillMode=process
+Restart=always
+RestartSec=5
+# Having non-zero Limit*s causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+LimitNPROC=infinity
+LimitCORE=infinity
+LimitNOFILE=infinity
+# Comment TasksMax if your systemd version does not supports it.
+# Only systemd 226 and above support this version.
+TasksMax=infinity
+OOMScoreAdjust=-999
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable containerd.service --now
+systemctl enable docker.service --now
 }
-# systemctl daemon-reload
-# systemctl enable docker.service --now
 
 
 main() {
     install_rely_on
     install_docker $@
-    if [ -f "docker-${version}.tgz" ]; then
+    if [ -f "docker-$version.tgz" ]; then
     # 解压文件
-    tar -xzf "docker-${version}.tgz"
+    tar -xzf docker-$version.tgz
     # 移动文件到 /usr/bin
     mv docker/* /usr/bin/
     # 删除临时文件
-    rm -rf docker "docker-${version}.tgz"
+    rm -rf docker "docker-$version.tgz"
     # 创建 docker.service 文件
     create_docker_service
     # 启动 docker 服务
@@ -162,3 +185,10 @@ main() {
 }
 
 main $@
+
+# test(){
+#     install_rely_on
+#     install_docker $@
+# }
+
+# test $@
