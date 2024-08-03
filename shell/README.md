@@ -154,7 +154,7 @@
    ```
 2. 运行脚本：
    ```bash
-   bash install-nginx.sh 
+   bash install-nginx.sh
    ```
 
 ## mng.sh 脚本使用说明
