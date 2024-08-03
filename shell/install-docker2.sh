@@ -14,7 +14,7 @@ if [ -z "$versions" ]; then
     exit 1
 fi
 install_rely_on() {
-    if [ `type tar` ];then
+    if ! type tar >/dev/null 2>&1;then
         echo "tar is installed."
     else
         echo "tar is not installed. Installing..."
@@ -22,25 +22,26 @@ install_rely_on() {
     fi
 }
 
-install_docker() {
+download_docker() {
 # 获取最新版本
 latest_version=$(echo "$versions" | tail -n 1)
 
     # 处理参数
-    if [ "\$1" == "-s" ]; then
+    if [ "$1" == "-s" ]; then
         version=$latest_version
     else
         # 显示版本列表并提示选择
         echo "Available Docker versions:"
         PS3="Select the version to install from 1-40 (press Enter for the latest version): "
         # 将所有版本和最新版本添加到选项中
+        # shellcheck disable=SC2207
+        # shellcheck disable=SC2116
+        # shellcheck disable=SC2086
         options=($(echo $versions) "latest")
         select version in "${options[@]}"; do
             if [[ "$REPLY" -ge "1" && "$REPLY" -le "${#options[@]}" ]]; then
                 if [ "$version" == "latest" ]; then
                     version=$latest_version
-                else
-                    version=$version
                 fi
                 break
             else
@@ -156,36 +157,49 @@ OOMScoreAdjust=-999
 WantedBy=multi-user.target
 EOF
 
-systemctl daemon-reload
-systemctl enable containerd.service --now
-systemctl enable docker.service --now
 }
 
+docker_daemon_install() {
+    sudo mkdir -p /etc/docker
+	sudo chmod 0755 /etc/docker
+    sudo sh -c 'cat > /etc/docker/daemon.json' <<EOF
+{
+	"registry-mirrors": [
+		"https://docker.gbxx.fun"
+	]
+}
+EOF
+}
 
 main() {
     install_rely_on
-    install_docker $@
+    sudo groupadd docker 2> /dev/null || echo "group docker already exists"
+    sudo usermod -aG docker "$USER"
+    download_docker "$@"
     if [ -f "docker-$version.tgz" ]; then
     # 解压文件
-    tar -xzf docker-$version.tgz
+    tar -xzf "docker-$version.tgz"
     # 移动文件到 /usr/bin
     mv docker/* /usr/bin/
     # 删除临时文件
     rm -rf docker "docker-$version.tgz"
     # 创建 docker.service 文件
     create_docker_service
-    # 启动 docker 服务
-    systemctl daemon-reload
-    systemctl enable docker.service --now
     # 提示安装成功
     echo "Docker ${version} installation completed."
+    docker_daemon_install
+    # 启动docker服务
+    systemctl daemon-reload
+    systemctl enable containerd.service --now
+    systemctl enable docker.service --now
     else
         echo "Failed to download Docker ${version}."
     fi
 }
 
-main $@
+main "$@"
 
+# 测试下载模块
 # test(){
 #     install_rely_on
 #     install_docker $@
