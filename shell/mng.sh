@@ -10,20 +10,20 @@ read_file(){
     do
         if [[ $line == *"include"* ]]
         then
-            for i in $(echo $line|awk '$1 == "include" {print $2}' | sed 's/;//')
+            for i in $(echo "$line"|awk '$1 == "include" {print $2}' | sed 's/;//')
             do
-                if [ -f $i ]
+                if [ -f "$i" ]
                 then
                     echo -e "\t# 配置来自 $i"
                     while read -r linein
                     do
                     echo -e "\t$linein"
-                    done < $i
+                    done < "$i"
                 fi
             done
         # echo $line
         else
-            echo $line
+            echo "$line"
         fi
     done < $CFGPATH
 }

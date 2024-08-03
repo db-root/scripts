@@ -18,9 +18,10 @@ if [[ -f ./.env ]]; then
     source ./.env
 
 elif [[ -f $SCRIPT_DIR/.env ]]; then
+    # shellcheck disable=SC1091
     source $SCRIPT_DIR/.env
 else
-    echo ".env file not found! Manually copy the ".env-template" file to ".env" and add variables as required"
+    echo ".env file not found! Manually copy the '.env-template' file to '.env' and add variables as required"
     exit 1
 fi
 # 若不需要使用bark报警，则手动注释掉改以上内容
@@ -57,8 +58,9 @@ function check_cpu() {
 
         # 如果连续超过阈值次数达到灵敏度阈值，则触发curl命令
         if [ "$counter_cpu" -ge "$SENSITIVITY_THRESHOLD" ]; then
+            # shellcheck disable=SC2006
             echo  "`date +'%Y-%m-%d %H:%m:%S'` === CPU usage exceeds the threshold. Triggering curl command... === $cpu_usage%"
-            curl $url_cpu%3A$cpu_usage%25
+            curl "$url_cpu"%3A"$cpu_usage"%25
             # curl -X POST "$url_cpu" -d "CPU usage exceeds the threshold: $cpu_usage%"
             # 重置计数器和时间戳
             counter_cpu=0
@@ -94,7 +96,7 @@ function check_memory() {
         # 如果连续超过阈值次数达到灵敏度阈值，则触发curl命令
         if [ "$counter_memory" -ge "$SENSITIVITY_THRESHOLD" ]; then
             # echo "Memory usage exceeds the threshold. Triggering curl command..."
-            echo  "`date +'%Y-%m-%d %H:%m:%S'` === Memory usage exceeds the threshold. Triggering curl command... === $memory_usage%"
+            echo  "$(date +'%Y-%m-%d %H:%m:%S') === Memory usage exceeds the threshold. Triggering curl command... === $memory_usage%"
             curl $url_memory%3A$memory_usage%25
             # curl -X POST "$url_memory" -d "Memory usage exceeds the threshold: $memory_usage%"
             # 重置计数器和时间戳

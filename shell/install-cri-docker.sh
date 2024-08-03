@@ -7,10 +7,10 @@ else
     echo 'docker 已安装';
 fi
 
-cd /tmp
+cd /tmp || exit
 wget https://github.gbxx.fun/https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.7/cri-dockerd-0.3.7.amd64.tgz
 tar xf cri-dockerd-0.3.7.amd64.tgz
-cd cri-dockerd
+cd cri-dockerd || exit
 install -o root -g root -m 0755 cri-dockerd /usr/local/bin/cri-dockerd
 
 cat >> /lib/systemd/system/cri-docker.service << EOF
@@ -69,3 +69,6 @@ SocketGroup=docker
 [Install]
 WantedBy=sockets.target
 EOF
+
+systemctl daeload-reload
+systemctl enable cri-docker.service --now 
