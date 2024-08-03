@@ -1,44 +1,200 @@
-# 脚本说明
-> 声明 
-> 系列脚本仅供学习交流使用，请勿在生产环境使用，若对于脚本有什么优化的建议，欢迎提交issue
-# CheckSSL.sh SSL证书监控脚本
-提供使用shell脚本来简单监控站点的SSL证书到期时间，若小于7天，则触发curl动作配合[bark](https://bark.day.app/#/)（该应用貌似仅Iphone可用）进行告警，也可以优化之后支持钉钉、企业微信等告警通道发送告警提醒
-## 脚本依赖
-依赖于openssl，目前常见的Linux系统默认均包含该程序
-## 变量依赖
+# Eli-chang开源脚本集合使用说明
+
+欢迎使用Eli-chang的开源脚本集合。以下是每个脚本的详细使用说明、依赖描述、环境变量配置以及参数用法。
+
+## CheckSSL.sh 脚本使用说明
+
+### 脚本功能
+检查指定网站的SSL证书到期时间，并在到期前发送告警。
+
+### 脚本依赖
+- `openssl`
+- `curl`
+
+### 环境变量依赖
+- `bark_key`（可选，用于发送bark通知）
 .env文件应和该脚本文件处于同一目录内，并且文件中应包含变量"bark_key"，例如“bark_key=xxxxxxxxxx”，获取方式参考：[brak使用参考](https://bark.day.app/#/tutorial)
 若不需要进行通知告警，则可以手动将脚本中的条件判断语句进行注释
 也可以添加其他告警，例如钉钉、企微或其他webhook等告警通道
 
-例如:
-```bash
-# if [ -f ./.env ]; then
-#     source ./.env
-# else
-#     echo ".env file not found! Manually copy the ".env-template" file to ".env" and add variables as required"
-#     exit 1
-# fi
-······
-
-# get_ssl_expiry_date() {
+    例如:
+    ```bash
+    # if [ -f ./.env ]; then
+    #     source ./.env
+    # else
+    #     echo ".env file not found! Manually copy the ".env-template" file to ".env" and add variables as required"
+    #     exit 1
+    # fi
     ······
-#     if [ $days_left -le 7 ]; then
-#         curl -s https://api.day.app/$bark_key/SSL监控告警/"$site: 证书在 $days_left 天内过期"?group=jobtest
-#     else
-#         echo "$site: Certificate expires on $formatted_date"
-#     fi
-# }
-```
 
-# OpenSSL.sh 快速生成自签名证书脚本
+    # get_ssl_expiry_date() {
+        ······
+    #     if [ $days_left -le 7 ]; then
+    #         curl -s https://api.day.app/$bark_key/SSL监控告警/"$site: 证书在 $days_left 天内过期"?group=jobtest
+    #     else
+    #         echo "$site: Certificate expires on $formatted_date"
+    #     fi
+    # }
+    ```
 
-## 脚本依赖
-依赖于openssl，目前常见的Linux系统默认均包含该程序
+### 参数用法
+- 无特定命令行参数，配置通过`.env`文件或脚本内硬编码。
 
-## 变量依赖
-无
+### 使用方法
+1. 下载脚本：
+   ```bash
+   wget https://download.elisky.cn/scripts/shell/CheckSSL.sh
+   ```
+2. 创建并配置环境变量文件：
+   ```bash
+   cp .env-template .env
+   vim .env
+   # 例如设置bark_key
+   ```
+3. 运行脚本：
+   ```bash
+   bash CheckSSL.sh
+   ```
 
-## 使用说明
+## install-cri-docker.sh 脚本使用说明
+
+### 脚本功能
+安装cri-docker，Docker的CRI运行时。
+
+### 脚本依赖
+- `wget`
+- `tar`
+- `systemd`
+
+### 环境变量依赖
+无特定环境变量依赖。
+
+### 参数用法
+- 无参数，脚本直接执行安装流程。
+
+### 使用方法
+1. 下载脚本：
+   ```bash
+   wget https://download.elisky.cn/scripts/shell/install-cri-docker.sh
+   ```
+2. 运行脚本：
+   ```bash
+   bash install-cri-docker.sh
+   ```
+
+## install-docker2.sh 脚本使用说明
+
+### 脚本功能
+安装或更新Docker到最新版本或指定版本。
+
+### 脚本依赖
+- `curl`
+- `tar`
+
+### 环境变量依赖
+无特定环境变量依赖。
+
+### 参数用法
+- `-s` 或 `--skip-confirmation`：跳过版本选择，直接安装最新版本。
+
+### 使用方法
+1. 下载脚本：
+   ```bash
+   wget https://download.elisky.cn/scripts/shell/install-docker2.sh
+   ```
+2. 运行脚本：
+   ```bash
+   bash install-docker2.sh -s  # 直接安装最新版本
+   ```
+
+## install-docker.sh 脚本使用说明
+
+### 脚本功能
+安装Docker Engine。
+
+### 脚本依赖
+- `curl`
+
+### 环境变量依赖
+- `mirror`（可选，用于指定软件源镜像）
+
+### 参数用法
+- `--version <VERSION>`：安装指定版本的Docker。
+- `--channel <stable|test>`：选择安装通道。
+- `--mirror <Aliyun|AzureChinaCloud>`：选择使用哪个镜像源。
+
+### 使用方法
+1. 下载脚本：
+   ```bash
+   wget https://download.elisky.cn/scripts/shell/install-docker.sh
+   ```
+2. 运行脚本：
+   ```bash
+   bash install-docker.sh --mirror Aliyun
+   ```
+
+## install-nginx.sh 脚本使用说明
+
+### 脚本功能
+安装Nginx Web服务器。
+
+### 脚本依赖
+- 根据系统不同，可能是`apt-get`、`yum`、`zypper`等包管理工具。
+
+### 环境变量依赖
+无特定环境变量依赖。
+
+### 参数用法
+- 无参数，脚本自动添加Nginx仓库并安装。
+
+### 使用方法
+1. 下载脚本：
+   ```bash
+   wget https://download.elisky.cn/scripts/shell/install-nginx.sh
+   ```
+2. 运行脚本：
+   ```bash
+   bash install-nginx.sh
+   ```
+
+## mng.sh 脚本使用说明
+
+### 脚本功能
+合并Nginx配置文件及其include的文件。
+
+### 脚本依赖
+无特定脚本依赖。
+
+### 环境变量依赖
+- `CFGPATH`：需要设置为实际的Nginx配置文件路径。
+
+### 参数用法
+- 无参数，脚本输出合并后的配置文件到标准输出。
+
+### 使用方法
+1. 下载脚本：
+   ```bash
+   wget https://download.elisky.cn/scripts/shell/mng.sh
+   ```
+2. 配置并运行脚本：
+   ```bash
+   vim mng.sh
+   # 设置CFGPATH变量
+   bash mng.sh > merged.conf
+   ```
+
+## OpenSSL.sh 脚本使用说明
+
+### 脚本功能
+生成自签名SSL证书。
+
+### 脚本依赖
+- `openssl`
+
+### 环境变量依赖
+- `bark_key`（可选，用于发送bark通知）
+
+### 参数用法
 ```bash
 wget https://download.elisky.cn/scripts/shell/OpenSSL.sh
 
@@ -55,15 +211,32 @@ wget https://download.elisky.cn/scripts/shell/OpenSSL.sh
  --ssl-trusted-ip=1.1.1.1,2.2.2.2,3.3.3.3 --ssl-size=2048 --ssl-date=3650
 ```
 
-# SystemInfoMonitor.sh 系统基础资源检测
-该脚本主要用于检测简单的系统资源利用率，如 磁盘、CPU、内存、带宽利用率等
-## 变量依赖
-.env文件应和该脚本文件处于同一目录内，并且文件中应包含变量"bark_key"，例如“bark_key=xxxxxxxxxx”，获取方式参考：[brak使用参考](https://bark.day.app/#/tutorial)
-若不需要进行通知告警，则可以手动将脚本中的条件判断语句进行注释
-也可以添加其他告警，例如钉钉、企微或其他webhook等告警通道
 
-内置变量：
+### 使用方法
+1. 下载脚本：
+   ```bash
+   wget https://download.elisky.cn/scripts/shell/OpenSSL.sh
+   ```
+2. 运行脚本：
+   ```bash
+   bash OpenSSL.sh --ssl-domain www.example.com --ssl-trusted-ip 192.168.1.1,10.0.0.1
+   ```
 
+## SystemInfoMonitor.sh 脚本使用说明
+
+### 脚本功能
+监控系统信息，包括CPU、内存、磁盘和网络使用率，并在超过阈值时发送告警。
+
+### 脚本依赖
+- `curl`
+
+### 环境变量依赖
+- `bark_key`：用于发送bark通知。
+
+### 参数用法
+- 无参数，脚本使用内置阈值和灵敏度设置。
+  
+### 内置变量
 ```bash
 # 若有更改需求，则在脚本中进行编辑更改
 # 设置阈值和灵敏度（可以根据需求修改）
@@ -77,7 +250,7 @@ SENSITIVITY_THRESHOLD=3  # 连续超过阈值的次数，达到3次触发curl命
 CHECK_INTERVAL=10  # 检测的时间间隔，单位为秒
 ```
 
-## 脚本用法
+### 使用方法
 ```bash
 wget https://download.elisky.cn/scripts/shell/SystemInfoMonitor.sh
 # 后台持续运行，若需要记录脚本运行日志，则使用追加重定向追加到目标日志文件中，但为了防止持续检测出现占用空间过大可以考虑丢弃运行记录
@@ -103,13 +276,4 @@ crontab -e
 
 ```
 
-# Q&A
-## 已添加.env文件，但仍提示找不到变量文件
-如下提示：
-`.env file not found! Manually copy the .env-template file to .env and add variables as required`
-
-该问题是由于shell脚本在调用时默认是从当前目录下获取变量信息以及文件的相对路径。由于脚本中对于env文件的判断是`if -f ./.env`和`source ./.env`进行获取变量，所以在 运行的目标 脚本同级目录中添加.env文件之后，若运行路径不是在脚本所在路径下时，则会出现该提示
-解决该问题的方法是：
-cd切换工作目录到 所用目标脚本的目录中去使用脚本，或者是在工作目录下去创建所需的.env文件，这两个方法同样适用
-
-后续增加了路径判断已彻底解决该问题
+请根据您的具体需求，按照上述指南使用相应的脚本。如果需要进一步的帮助或有其他问题，欢迎提交Issue或联系我们。
