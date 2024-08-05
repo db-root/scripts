@@ -176,11 +176,11 @@ main() {
     download_docker "$@"
     if [ -f "docker-$version.tgz" ]; then
     # 解压文件
-    tar -xzf "docker-$version.tgz"
+    sudo tar -xzf "docker-$version.tgz"
     # 移动文件到 /usr/bin
-    mv docker/* /usr/bin/
+    sudo mv docker/* /usr/bin/
     # 删除临时文件
-    rm -rf docker "docker-$version.tgz"
+    sudo rm -rf docker "docker-$version.tgz"
     # 创建 docker.service 文件
     create_docker_service
     # 提示安装成功
@@ -191,7 +191,7 @@ main() {
     systemctl enable containerd.service --now
     systemctl enable docker.service --now
     sudo groupadd docker
-	sudo usermod -aG docker $$USER
+	sudo usermod -aG docker $USER
 	newgrp docker
     else
         echo "Failed to download Docker ${version}."
