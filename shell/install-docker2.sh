@@ -173,9 +173,6 @@ EOF
 
 main() {
     install_rely_on
-	sudo groupadd docker
-	sudo usermod -aG docker $$USER
-	newgrp docker
     download_docker "$@"
     if [ -f "docker-$version.tgz" ]; then
     # 解压文件
@@ -193,6 +190,9 @@ main() {
     systemctl daemon-reload
     systemctl enable containerd.service --now
     systemctl enable docker.service --now
+    sudo groupadd docker
+	sudo usermod -aG docker $$USER
+	newgrp docker
     else
         echo "Failed to download Docker ${version}."
     fi
