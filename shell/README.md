@@ -110,7 +110,7 @@
 ## install-docker.sh 脚本使用说明
 
 ### 脚本功能
-安装Docker Engine。
+docker官方提供的安装脚本，已经替换docker官方的源，并添加了国内镜像源支持。
 
 ### 脚本依赖
 - `curl`

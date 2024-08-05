@@ -173,8 +173,9 @@ EOF
 
 main() {
     install_rely_on
-    sudo groupadd docker 2> /dev/null || echo "group docker already exists"
-    sudo usermod -aG docker "$USER"
+	sudo groupadd docker
+	sudo usermod -aG docker $$USER
+	newgrp docker
     download_docker "$@"
     if [ -f "docker-$version.tgz" ]; then
     # 解压文件
