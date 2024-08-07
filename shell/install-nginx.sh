@@ -19,7 +19,7 @@ function add_nginx_repo {
             curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
             apt update
             ;;
-        centos | rhel | almalinux | rockylinux | anolis )
+        centos | rhel | almalinux | rockylinux | anolis)
             major_version=$(echo $VER | cut -d. -f1)
             # Adding Nginx YUM repository
             cat <<EOF > /etc/yum.repos.d/nginx.repo
