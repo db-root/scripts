@@ -20,28 +20,28 @@ if [ $# -eq 0 ]; then
 else
     case "$1" in
         "install-docker")
-            echo "https://download.elisky.cn/scripts/shell/install-docker.sh"
+            bash <(curl -sL https://download.elisky.cn/scripts/shell/install-docker.sh)
             ;;
         "install-docker2")
-            echo "https://download.elisky.cn/scripts/shell/install-docker2.sh"
+            bash <(curl -sL https://download.elisky.cn/scripts/shell/install-docker2.sh)
             ;;
         "CheckSSL")
-            echo "https://download.elisky.cn/scripts/shell/CheckSSL.sh"
+            bash <(curl -sL https://download.elisky.cn/scripts/shell/CheckSSL.sh)
             ;;
         "install-cri-docker")
-            echo "https://download.elisky.cn/scripts/shell/install-cri-docker.sh"
+            bash <(curl -sL https://download.elisky.cn/scripts/shell/install-cri-docker.sh)
             ;;
         "install-nginx")
-            echo "https://download.elisky.cn/scripts/shell/install-nginx.sh"
+            bash <(curl -sL https://download.elisky.cn/scripts/shell/install-nginx.sh)
             ;;
         "mng")
-            echo "https://download.elisky.cn/scripts/shell/mng.sh"
+            bash <(curl -sL https://download.elisky.cn/scripts/shell/mng.sh)
             ;;
         "OpenSSL")
-            echo "https://download.elisky.cn/scripts/shell/OpenSSL.sh"
+            bash <(curl -sL https://download.elisky.cn/scripts/shell/OpenSSL.sh)
             ;;
         "SystemInfoMonitor")
-            echo "https://download.elisky.cn/scripts/shell/SystemInfoMonitor.sh"
+            bash <(curl -sL https://download.elisky.cn/scripts/shell/SystemInfoMonitor.sh)
             ;;
         *)
             show_help
