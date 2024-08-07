@@ -186,13 +186,14 @@ main() {
     # 提示安装成功
     echo "Docker ${version} installation completed."
     docker_daemon_install
+    # 创建docker用户组并将当前用户加入到docker组
+    groupadd docker 2>/dev/null || sudo groupadd docker
+	sudo usermod -aG docker $USER
     # 启动docker服务
     systemctl daemon-reload
     systemctl enable containerd.service --now
     systemctl enable docker.service --now
-    sudo groupadd docker
-	sudo usermod -aG docker $USER
-	newgrp docker
+	# newgrp docker
     else
         echo "Failed to download Docker ${version}."
     fi
