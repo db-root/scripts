@@ -2,7 +2,7 @@
 
 # 定义帮助信息
 show_help() {
-    echo "Usage: $0 [command] [download|execute]"
+    echo "Usage: $0 [command] [download|execute] [additional args...]"
     echo "Available commands:"
     echo "  install-docker"
     echo "  install-docker2"
@@ -23,8 +23,11 @@ if [ $# -lt 1 ]; then
 else
     command="$1"
     action="execute" # 默认操作是执行
-    if [ $# -eq 2 ]; then
-        action="$2"
+    shift # 移除第一个参数
+
+    if [ "$1" = "download" ] || [ "$1" = "execute" ]; then
+        action="$1"
+        shift # 移除第二个参数
     fi
 
     case "$command" in
@@ -61,6 +64,6 @@ else
     if [ "$action" = "download" ]; then
         curl -o "${command}.sh" -sL "$url"
     else
-        bash <(curl -sL "$url")
+        bash <(curl -sL "$url") "$@"
     fi
 fi
