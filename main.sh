@@ -15,6 +15,7 @@ show_help() {
     echo "    mng               (download)"
     echo "    OpenSSL           (download|execute)"
     echo "    SystemInfoMonitor (download)"
+    echo "    env               (download)"
     echo "Options:"
     echo "    download - Download the script but do not execute it."
     echo "    execute - Execute the script after downloading it (default)."
@@ -60,6 +61,9 @@ else
             ;;
         "SystemInfoMonitor")
             url="https://download.elisky.cn/scripts/shell/SystemInfoMonitor.sh"
+            ;;
+        "env")
+            url="https://download.elisky.cn/scripts/shell/.env-template"
             ;;
         *)
             show_help
