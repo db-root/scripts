@@ -135,7 +135,7 @@ function install_nginx {
         ubuntu | debian)
             apt install -y nginx
             ;;
-        centos | rhel | almalinux | rockylinux)
+        centos | rhel | almalinux | rockylinux | anolis)
             if [ `rpm -qa |grep procps-ng` ]; then
                 echo \"procps-ng\" IS Installed
             else
