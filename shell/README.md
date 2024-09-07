@@ -1,6 +1,20 @@
 # Eli-chang开源脚本集合使用说明
-
-欢迎使用Eli-chang的开源脚本集合。以下是每个脚本的详细使用说明、依赖描述、环境变量配置以及参数用法。
+欢迎使用Eli-chang的开源脚本集合。以下是每个脚本的详细使用说明、依赖描述、环境变量配置以及参数用法。<br />
+更新日期：2024年8月8日<br />
+为方便调用，该系列脚本已经增加统一入口，可以直接运行`bash <(curl -sL sc.eli1.top)`来获取帮助以及执行或下载对应脚本。<br />
+> 该系列脚本仅供测试学习交流使用，请勿在生产环境中使用，若环境中包含重要数据，请务必在使用前将数据进行妥善备份。<br />
+> 脚本已同步发布在GitHub和Gitee上，欢迎Star和Fork。<br />
+> Gitee: https://gitee.com/Eli-chang/scripts<br />
+> Github: https://github.com/db-root/scripts<br />
+> 系列脚本包括：<br />
+> - CheckSSL.sh 网站SSL证书到期时间监控<br />
+> - install-cri-docker.sh 安装cri-docker，Docker的CRI运行时<br />
+> - install-docker2.sh 安装或更新Docker到最新版本或指定版本<br />
+> - install-docker.sh 安装或更新Docker到最新版本或指定版本（Docker官方版，已添加国内镜像源支持）<br />
+> - install-nginx.sh 安装Nginx Web服务器<br />
+> - mng.sh 合并Nginx配置文件及其include的文件<br />
+> - OpenSSL.sh 生成自签名SSL证书<br />
+> - SystemInfoMonitor.sh 监控系统信息，包括CPU、内存、磁盘和网络使用率，并在超过阈值时发送告警（经过简单调试可实现钉钉、企业微信告警）。<br />
 
 ## CheckSSL.sh 脚本使用说明
 
@@ -12,10 +26,10 @@
 - `curl`
 
 ### 环境变量依赖
-- `bark_key`（可选，用于发送bark通知）
-.env文件应和该脚本文件处于同一目录内，并且文件中应包含变量"bark_key"，例如“bark_key=xxxxxxxxxx”，获取方式参考：[brak使用参考](https://bark.day.app/#/tutorial)
-若不需要进行通知告警，则可以手动将脚本中的条件判断语句进行注释
-也可以添加其他告警，例如钉钉、企微或其他webhook等告警通道
+- `bark_key`（可选，用于发送bark通知）<br />
+.env文件应和该脚本文件处于同一目录内，并且文件中应包含变量"bark_key"，例如“bark_key=xxxxxxxxxx”，获取方式参考：[brak使用参考](https://bark.day.app/#/tutorial)<br />
+若不需要进行通知告警，则可以手动将脚本中的条件判断语句进行注释<br />
+也可以添加其他告警，例如钉钉、企微或其他webhook等告警通道<br />
 
     例如:
     ```bash
@@ -43,11 +57,12 @@
 ### 使用方法
 1. 下载脚本：
    ```bash
-   wget https://download.elisky.cn/scripts/shell/CheckSSL.sh
+   bash <(curl -sL sc.eli1.top) CheckSSL download
+   bash <(curl -sL sc.eli1.top) env download
    ```
 2. 创建并配置环境变量文件：
    ```bash
-   cp .env-template .env
+   cp env.sh .env
    vim .env
    # 例如设置bark_key
    ```
@@ -75,18 +90,18 @@
 ### 使用方法
 1. 下载脚本：
    ```bash
-   wget https://download.elisky.cn/scripts/shell/install-cri-docker.sh
+   bash <(curl -sL sc.eli1.top) install-cri-docker download
    ```
 2. 运行脚本：
    ```bash
-   bash install-cri-docker.sh
+   bash <(curl -sL sc.eli1.top) install-cri-docker
    ```
 
 ## install-docker2.sh 脚本使用说明
 
 ### 脚本功能
-安装或更新Docker到最新版本或指定版本。
-
+采用二进制安装或更新Docker到最新版本或指定版本。<br />
+目前已经测试过：Ubuntu 16+、Debain 11+、CentOS/RHEL/AlmaLinux/RockyLinux 7+、Alibaba Cloud Linux 2+、OpenSUSE/SUSE 12+<br />
 ### 脚本依赖
 - `curl`
 - `tar`
@@ -95,22 +110,22 @@
 无特定环境变量依赖。
 
 ### 参数用法
-- `-s` 或 `--skip-confirmation`：跳过版本选择，直接安装最新版本。
+- `-s` ：跳过版本选择，直接安装最新版本。
 
 ### 使用方法
 1. 下载脚本：
    ```bash
-   wget https://download.elisky.cn/scripts/shell/install-docker2.sh
+   bash <(curl -sL sc.eli1.top) install-docker2
    ```
 2. 运行脚本：
    ```bash
-   bash install-docker2.sh -s  # 直接安装最新版本
+   bash <(curl -sL sc.eli1.top) install-docker2 -s  # 直接安装最新版本
    ```
 
 ## install-docker.sh 脚本使用说明
 
 ### 脚本功能
-docker官方提供的安装脚本，已经替换docker官方的源，并添加了国内镜像源支持。
+docker官方提供的安装脚本，已经替换docker官方的源，并添加了国内镜像源支持。但经过测试，目前仅支持常见Linux操作系统，其他可能支持性比较差，建议使用install-docker2
 
 ### 脚本依赖
 - `curl`
@@ -121,22 +136,24 @@ docker官方提供的安装脚本，已经替换docker官方的源，并添加�
 ### 参数用法
 - `--version <VERSION>`：安装指定版本的Docker。
 - `--channel <stable|test>`：选择安装通道。
-- `--mirror <Aliyun|AzureChinaCloud>`：选择使用哪个镜像源。
+- `--mirror <Aliyun|AzureChinaCloud>`：选择使用哪个镜像源，默认使用的是国内镜像站。
 
 ### 使用方法
 1. 下载脚本：
    ```bash
-   wget https://download.elisky.cn/scripts/shell/install-docker.sh
+   bash <(curl -sL sc.eli1.top) install-docker
    ```
 2. 运行脚本：
    ```bash
-   bash install-docker.sh --mirror Aliyun
+   bash <(curl -sL sc.eli1.top) install-docker --mirror Aliyun
    ```
 
 ## install-nginx.sh 脚本使用说明
 
 ### 脚本功能
-安装Nginx Web服务器。
+使用包管理器安装预编译版Nginx Web服务器。<br />
+默认不会安装任何模块，若有需要，可以手动使用包管理安装<br />
+目前已经测试过：Ubuntu 16+、Debain 11+、CentOS/RHEL/AlmaLinux/RockyLinux 7+、Alibaba Cloud Linux 2+、OpenSUSE/SUSE 12+<br />
 
 ### 脚本依赖
 - 根据系统不同，可能是`apt-get`、`yum`、`zypper`等包管理工具。
@@ -150,11 +167,13 @@ docker官方提供的安装脚本，已经替换docker官方的源，并添加�
 ### 使用方法
 1. 下载脚本：
    ```bash
-   wget https://download.elisky.cn/scripts/shell/install-nginx.sh
+   bash <(curl -sL sc.eli1.top) install-nginx.sh download
    ```
 2. 运行脚本：
    ```bash
-   bash install-nginx.sh
+   bash <(curl -sL sc.eli1.top) install-nginx.sh
+   # 若需要安装模块，可以手动安装，yum install nginx-all-modules ,其他Linux发行版则使用对应的包管理器进行安装
+   # 后续可能会考虑增加二进制安装的脚本或文档
    ```
 
 ## mng.sh 脚本使用说明
@@ -174,13 +193,14 @@ docker官方提供的安装脚本，已经替换docker官方的源，并添加�
 ### 使用方法
 1. 下载脚本：
    ```bash
-   wget https://download.elisky.cn/scripts/shell/mng.sh
+   bash <(curl -sL sc.eli1.top) mng download
    ```
 2. 配置并运行脚本：
    ```bash
    vim mng.sh
    # 设置CFGPATH变量
    bash mng.sh > merged.conf
+   # 若nginx配置文件路径为默认/etc/nginx/nginx.conf 则可以直接运行 bash <(curl -sL sc.eli1.top) mng
    ```
 
 ## OpenSSL.sh 脚本使用说明
@@ -215,11 +235,12 @@ wget https://download.elisky.cn/scripts/shell/OpenSSL.sh
 ### 使用方法
 1. 下载脚本：
    ```bash
-   wget https://download.elisky.cn/scripts/shell/OpenSSL.sh
+   bash <(curl -sL sc.eli1.top) OpenSSL download
    ```
 2. 运行脚本：
    ```bash
    bash OpenSSL.sh --ssl-domain www.example.com --ssl-trusted-ip 192.168.1.1,10.0.0.1
+   # 或 bash <(curl -sL sc.eli1.top) OpenSSL --ssl-trusted-ip 192.168.1.1,10.0.0.1
    ```
 
 ## SystemInfoMonitor.sh 脚本使用说明
@@ -276,4 +297,4 @@ crontab -e
 
 ```
 
-请根据您的具体需求，按照上述指南使用相应的脚本。如果需要进一步的帮助或有其他问题，欢迎提交Issue或联系我们。
+请根据您的具体需求，按照上述指南使用相应的脚本。如果需要进一步的帮助或有其他问题，欢迎提交Issue或联系我。

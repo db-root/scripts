@@ -2,8 +2,8 @@
 
 # 定义帮助信息
 show_help() {
-    echo "Usage: bash <(curl -sL sc.gbxx.fun) [command] [download|execute] [additional args...]"
-    echo "!!! The 'sc.gbxx.fun' domain name is for debugging only. If it cannot be used, use 'download.elisky.cn' instead !!!"
+    echo "Usage: bash <(curl -sL sc.eli1.top) [command] [download|execute] [additional args...]"
+    echo "!!! The 'sc.eli1.top' domain name is for debugging only. If it cannot be used, use 'download.elisky.cn' instead !!!"
     echo "!!! For more information, please refer to: https://www.elisky.cn/posts/%E5%BC%80%E6%BA%90%E8%84%9A%E6%9C%AC/shell/shell%E5%BC%80%E6%BA%90%E8%84%9A%E6%9C%AC%E5%88%86%E4%BA%AB/ !!!"
     echo "Available commands:"
     echo "    install-docker    (download|execute)"
@@ -20,7 +20,7 @@ show_help() {
     echo "    download - Download the script but do not execute it."
     echo "    execute - Execute the script after downloading it (default)."
     echo "Use example:"
-    echo "    bash <(curl -sL sc.gbxx.fun) install-docker2 -s"
+    echo "    bash <(curl -sL sc.eli1.top) install-docker2 -s"
     echo "    ## Silently install the latest version of docker in binary mode"
 }
 

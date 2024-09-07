@@ -1,5 +1,5 @@
 #!/bin/bash
-download_site="download-docker.gbxx.fun"
+download_site="download-docker.eli1.top"
 # 获取所有 Docker 版本
 versions=$(curl -s "https://$download_site/linux/static/stable/$(uname -m)/" | \
     grep -o "docker-.*" | \
@@ -54,7 +54,7 @@ latest_version=$(echo "$versions" | tail -n 1)
 echo "The Docker version selected is: $version"
 
 # 构建下载链接
-url="https://download-docker.gbxx.fun/linux/static/stable/$(uname -m)/docker-${version}.tgz"
+url="https://download-docker.eli1.top/linux/static/stable/$(uname -m)/docker-${version}.tgz"
 
 # 执行下载
 echo "Downloading Docker ${version}..."
@@ -165,7 +165,7 @@ docker_daemon_install() {
     sudo sh -c 'cat > /etc/docker/daemon.json' <<EOF
 {
 	"registry-mirrors": [
-		"https://docker.gbxx.fun"
+		"https://docker.eli1.top"
 	]
 }
 EOF

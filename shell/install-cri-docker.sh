@@ -8,7 +8,7 @@ else
 fi
 
 cd /tmp || exit
-wget https://github.gbxx.fun/https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.7/cri-dockerd-0.3.7.amd64.tgz
+wget https://github.eli1.top/https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.7/cri-dockerd-0.3.7.amd64.tgz
 tar xf cri-dockerd-0.3.7.amd64.tgz
 cd cri-dockerd || exit
 install -o root -g root -m 0755 cri-dockerd /usr/local/bin/cri-dockerd

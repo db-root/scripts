@@ -365,7 +365,7 @@ docker_daemon_install() {
 	cat > /etc/docker/daemon.json <<EOF
 {
 	"registry-mirrors": [
-		"https://docker.gbxx.fun"
+		"https://docker.eli1.top"
 	]
 }
 EOF
