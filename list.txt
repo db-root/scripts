@@ -1,0 +1,19 @@
+/usr/share/nginx/html/download/scripts
+├── cloudflare-workers
+│   └── download-dokcer.js
+├── LICENSE
+├── list.txt
+├── main.sh
+├── README.md
+└── shell
+    ├── CheckSSL.sh
+    ├── install-cri-docker.sh
+    ├── install-docker2.sh
+    ├── install-docker.sh
+    ├── install-nginx.sh
+    ├── mng.sh
+    ├── OpenSSL.sh
+    ├── README.md
+    └── SystemInfoMonitor.sh
+
+2 directories, 14 files
