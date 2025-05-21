@@ -165,7 +165,8 @@ docker_daemon_install() {
     sudo sh -c 'cat > /etc/docker/daemon.json' <<EOF
 {
 	"registry-mirrors": [
-		"https://docker.eli1.top"
+		"https://docker.eli1.top",
+        "https://docker.m.daocloud.io"
 	]
 }
 EOF
@@ -193,7 +194,15 @@ main() {
     systemctl daemon-reload
     systemctl enable containerd.service --now
     systemctl enable docker.service --now
+    mkdir -p /usr/libexec/docker/cli-plugins
+    curl -Ls https://github.eli1.top/https://github.eli1.top/https://github.com/docker/compose/releases/download/v2.36.1/docker-compose-`uname -s`-`uname -m` > /usr/libexec/docker/cli-plugins/docker-compose;chmod a+x /usr/libexec/docker/cli-plugins/docker-compose
 	# newgrp docker
+        if [ -x "$(command -v bash)" ]; then
+            source <(docker completion bash);echo "source <(docker completion bash)"  >> ${HOME}/.bashrc
+        fi
+        if [ -x "$(command -v zsh)" ]; then
+            source <(docker completion zsh);echo "source <(docker completion zsh)"  >> ${HOME}/.zshrc
+        fi
     else
         echo "Failed to download Docker ${version}."
     fi

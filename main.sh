@@ -12,6 +12,7 @@ show_help() {
     echo "    CheckSSL          (download)"
     echo "    install-cri-docker (download|execute)"
     echo "    install-nginx     (download|execute)"
+    echo "    install-g         (download|execute)"
     echo "    mng               (download)"
     echo "    OpenSSL           (download|execute)"
     echo "    SystemInfoMonitor (download)"
@@ -64,6 +65,9 @@ else
             ;;
         "env")
             url="https://download.elisky.cn/scripts/shell/.env-template"
+            ;;
+        "install-g")
+            url="https://download.elisky.cn/scripts/shell/install-gvm.sh"
             ;;
         *)
             show_help
