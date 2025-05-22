@@ -1,4 +1,4 @@
-# 更新时间：2025-05-21 02:30:01
+# 更新时间：2025-05-22 02:30:02
 
 # 来自https://github.eli1.top/https://raw.githubusercontent.com/BlueSkyXN/AdGuardHomeRules/master/ok.txt
 
