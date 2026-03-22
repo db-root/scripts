@@ -75,7 +75,7 @@ dns:
   pending_requests:
     enabled: true
 tls:
-  enabled: true
+  enabled: false
   server_name: dns.s.eli1.top
   force_https: false
   port_https: 443

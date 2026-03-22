@@ -44,23 +44,29 @@ add-daemonfile() {
 	cat > /etc/docker/daemon.json <<EOF
 {
 	"registry-mirrors": [
-		"https://docker.eli1.top",
-		"https://docker.m.daocloud.io"
+			"https://nd1.eli1.top",
+			"https://nd2.eli1.top",
+			"https://docker.fnnas.com",
+			"https://docker.m.daocloud.io",
+			"https://d2.eli1.top",
+			"https://do3.eli1.top"
 	]
+
 }
 EOF
 }
 do_install() {
+	echo "开始安装请稍等"
 	if command_exists yum;then
-	 	yum-AddRepo
-		yum-install
+	 	yum-AddRepo >> /dev/null;echo "添加yum软件源完成，开始安装"
+		yum-install >> /dev/null;echo "docker安装完成"
 	fi
 	if command_exists apt;then
 		apt-AddRepo
 		apt-install
 	fi
 	add-daemonfile
-	enable-server
+	enable-server >> /dev/null;echo -e '已完成启动docker，并设置开机自启动 \n===docker版本信息如下：'
 	docker version
 }
 

@@ -53,6 +53,8 @@
 @@||intuit.com^
 @@||baidu-ide.bj.bcebos.com^
 @@||sec.resource.xiaomi.net^
+@@||api.sec.intl.miui.com^
+@@||wl.jd.com^
 
 
 @@||ad.jp^
@@ -221,3 +223,4 @@
 @@||idv.cdn-apple.com^
 @@||idv-prod1.apple.com^
 @@||humb.apple.com^
+@@||www.widgets.link^

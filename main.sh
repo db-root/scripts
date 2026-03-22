@@ -13,6 +13,7 @@ show_help() {
     echo "    install-cri-docker (download|execute)"
     echo "    install-nginx     (download|execute)"
     echo "    install-g         (download|execute)"
+    echo "    install-zerotier  (download|execute)"
     echo "    mng               (download)"
     echo "    OpenSSL           (download|execute)"
     echo "    SystemInfoMonitor (download)"
@@ -68,6 +69,9 @@ else
             ;;
         "install-g")
             url="https://download.elisky.cn/scripts/shell/install-gvm.sh"
+            ;;
+        "install-zerotier")
+            url="https://download.elisky.cn/scripts/shell/install-zerotier.sh"
             ;;
         *)
             show_help

@@ -1,4 +1,4 @@
-# 更新时间：2025-05-22 02:30:02
+# 更新时间：2026-03-22 02:30:01
 
 # 来自https://github.eli1.top/https://raw.githubusercontent.com/BlueSkyXN/AdGuardHomeRules/master/ok.txt
 
@@ -57,6 +57,8 @@
 @@||intuit.com^
 @@||baidu-ide.bj.bcebos.com^
 @@||sec.resource.xiaomi.net^
+@@||api.sec.intl.miui.com^
+@@||wl.jd.com^
 
 
 @@||ad.jp^
@@ -225,6 +227,7 @@
 @@||idv.cdn-apple.com^
 @@||idv-prod1.apple.com^
 @@||humb.apple.com^
+@@||www.widgets.link^
 
 # 来自191.14自定义规则
 

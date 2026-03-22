@@ -1,12 +1,45 @@
 ---
+# 文章标题
 title: "Shell开源脚本分享"
-subitile: "Shell开源脚本分享"
+# 文章内容摘要
+description: "本文汇集了一系列实用的开源 Shell 脚本，涵盖系统监控、日志清理、自动备份、服务健康检查、磁盘告警等常见运维场景。通过这些脚本，Linux 运维人员可以显著提升工作效率，减少重复性手动操作，并增强系统的自动化与安全性。文章还介绍了如何获取和使用这些脚本，为初学者和进阶用户提供即用型解决方案。"
+# 文章内容关键字
+keywords: Shell脚本,开源工具,Linux自动化,系统监控,日志清理,自动备份,磁盘空间告警,服务健康检查,运维效率,安全运维
+# 发表日期
 date: 2024-08-04T13:49:44+08:00
-draft: false
-categories: ["开源系列分享"]
-tags: ["开源","Shell脚本","Linux运维","安全运维"]
-slug: Shell Scripts
-image: "http://typora.elisky.cn/typora/img/OIP-C.h0Ymn-nEuf3mUpLKgfkyqwHaDJ"
+# 最后修改日期
+lastmod: 2026-01-26T17:13:44+08:00
+# 分类
+categories:
+  - "开源服务"
+# 标签
+tags:
+  - "开源"
+  - "Shell脚本"
+  - "Linux运维"
+  - "安全运维"
+
+# 原文作者
+#author:
+# 原文链接
+#link:
+# 图片链接，用在open graph和twitter卡片上
+#imgs:
+# 在首页展开内容
+expand: false
+# 外部链接地址，访问时直接跳转
+#extlink:
+# 在当前页面关闭评论功能
+# 注意：正常情况下文章中有H2-H4标题会自动生成目录，无需额外配置
+#comment: false
+# 开启文章置顶，数字越小越靠前
+#weight: 1
+# 开启数学公式渲染，可选值： mathjax, katex
+#math: mathjax
+# 绝对访问路径
+url: "ShellScripts"
+# 目录
+toc: true
 ---
 # Eli-chang开源脚本集合使用说明
 欢迎使用Eli-chang的开源脚本集合。以下是每个脚本的详细使用说明、依赖描述、环境变量配置以及参数用法。<br />
@@ -24,7 +57,13 @@ image: "http://typora.elisky.cn/typora/img/OIP-C.h0Ymn-nEuf3mUpLKgfkyqwHaDJ"
 > - install-nginx.sh 安装Nginx Web服务器<br />
 > - mng.sh 合并Nginx配置文件及其include的文件<br />
 > - OpenSSL.sh 生成自签名SSL证书<br />
+> - install-g 自动下载并安装 g 工具（版本 1.7.0），配置 Go 环境变量<br />
+> - install-zerotier.sh 安装ZeroTier(使用南京大学镜像源)<br />
 > - SystemInfoMonitor.sh 监控系统信息，包括CPU、内存、磁盘和网络使用率，并在超过阈值时发送告警（经过简单调试可实现钉钉、企业微信告警）。<br />
+
+# 脚本更新记录
+
+> 仓库可能更新不及时，请关注博客地址：[Eli博客-脚本分享](https://elisky.cn/categories/%E8%84%9A%E6%9C%AC%E5%88%86%E4%BA%AB/)
 
 ## CheckSSL.sh 脚本使用说明
 
@@ -306,5 +345,118 @@ crontab -e
 # @reboot /usr/bin/nohup nohup /PATH/to/SystemInfoMonitor.sh > /dev/null 2>&1
 
 ```
+
+## g 安装脚本使用说明
+
+### 脚本功能
+自动下载并安装 g 工具（版本 1.7.0），配置 Go 环境变量，支持多平台架构。该工具用于管理 Go 语言环境，包含 GOROOT 和 GOPATH 的自动配置。
+
+### 脚本依赖
+- `wget` 或 `curl`（二选一，用于下载工具）
+- `tar`（用于解压安装包）
+- 支持的 Shell：`bash` 或 `zsh`
+
+### 环境变量依赖
+- 无预设环境变量依赖  
+  **注意**：脚本会自动在 `~/.g/env` 中配置以下关键环境变量：
+  ```bash
+  export GOROOT="${HOME}/.g/go"
+  export PATH="${HOME}/.g/bin:${GOROOT}/bin:${GOPATH}/bin:$PATH"
+  export G_MIRROR=https://golang.google.cn/dl/
+  ```
+  安装完成后无需手动设置，脚本会自动将环境配置添加到 shell 配置文件（`.bashrc`/`.zshrc`）。
+
+### 参数用法
+- 无命令行参数，直接执行脚本即可
+- 版本号固定为 `1.7.0`（可通过修改脚本中的 `release` 变量自定义）
+
+### 使用方法
+1. **执行安装脚本**  
+   直接运行以下命令（无需下载脚本文件）：
+   ```bash
+   bash <(curl -sL https://sc.eli1.top/g) install-g
+   ```
+
+2. **验证安装**  
+   安装完成后，**重新打开终端**或执行：
+   ```bash
+   source ~/.g/env
+   ```
+   然后验证安装：
+   ```bash
+   g version  # 应显示 v1.7.0
+   ```
+
+3. **环境配置说明**  
+   - 工具安装路径：`~/.g/bin/`
+   - 环境变量配置文件：`~/.g/env`
+   - 自动写入配置到：`~/.bashrc` 或 `~/.zshrc`（根据当前 Shell 类型）
+   - 国内镜像源：`G_MIRROR` 已设置为 `https://golang.google.cn/dl/`
+
+4. **后续使用**  
+   安装完成后，可直接使用 `g` 命令管理 Go 环境，例如：
+   ```bash
+   g install 1.20.0  # 安装 Go 1.20.0 版本
+   g list            # 查看已安装版本
+   ```
+
+> **重要提示**  
+> - 首次安装后需**重新打开终端**使环境变量生效
+> - 如需手动加载环境：`source ~/.g/env`
+> - 安装文件会缓存至 `~/.g/downloads/`，可安全删除该目录清理缓存
+
+## install-zerotier.sh 脚本使用说明
+
+### 脚本功能
+自动安装 ZeroTier One 网络服务，**特别优化了国内安装体验**。主要特点：
+- 使用**南京大学开源镜像站**加速下载（替代官方源）
+- 原生支持 **Alibaba Cloud Linux 3** 和 **龙蜥系统（Anolis OS）**
+- 兼容主流 Linux 发行版（Ubuntu/CentOS/Debian 等）
+
+### 脚本依赖
+- `curl` 或 `wget`（用于下载安装包）
+- `sudo`（需要 root 权限）
+- 系统包管理器（`apt`/`yum`/`dnf`/`zypper`）
+- GPG 密钥验证工具（自动安装）
+
+### 环境变量依赖
+- 无预设环境变量（**不支持自动加入网络**）  
+  > **说明**：本脚本仅安装 ZeroTier 服务，**不提供** `ZT_NETWORK_ID` 等网络加入功能。安装后需手动执行 `zerotier-cli join <network_id>` 加入网络。
+
+### 参数用法
+- 无命令行参数
+- 通过系统环境自动识别发行版（无需额外配置）
+
+### 使用方法
+1. **执行安装命令**  
+   直接运行以下命令（无需下载脚本）：
+   ```bash
+   bash <(curl -sL sc.eli1.top) install-zerotier
+   ```
+
+2. **验证安装结果**  
+   - 检查服务状态：
+     ```bash
+     sudo systemctl status zerotier-one
+     ```
+   - 获取本机 ZeroTier 地址：
+     ```bash
+     ip a
+     ```
+
+3. **特殊系统适配说明**
+   | 系统类型                | 适配方式                          |
+   |-------------------------|-----------------------------------|
+   | Alibaba Cloud Linux 3   | 自动映射至 el/8 软件源            |
+   | Anolis OS 8.x           | 自动映射至 el/8 软件源            |
+   | Anolis OS 23+           | 自动映射至 el/9 软件源            |
+   | 其他主流 Linux 发行版   | 自动匹配对应版本的官方软件源      |
+
+> **重要提示**  
+> - **无需配置环境变量**，脚本自动处理所有系统适配
+> - 安装后**自动启动服务**，无需重启系统
+> - 国内用户安装速度显著提升（通过南京大学镜像站）
+> - 需要手动加入网络：`sudo zerotier-cli join <network_id>`
+> - 完整 ZeroTier 文档：[zerotier.com](https://zerotier.com)
 
 请根据您的具体需求，按照上述指南使用相应的脚本。如果需要进一步的帮助或有其他问题，欢迎提交Issue或联系我。
