@@ -1,0 +1,15 @@
+# 忽略 planet 文件
+planet
+
+# 忽略 planet-v2 文件
+planet-v2
+
+# 忽略 text 目录及其所有内容
+text/
+
+# 忽略 txt 目录及其所有内容
+txt/
+
+# 忽略 list.txt 文件
+list.txt
+
